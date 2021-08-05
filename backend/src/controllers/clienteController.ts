@@ -1,12 +1,10 @@
 import { Request, Response } from 'express';
-import { dao } from '../dao/usuarioDAO';
+import { dao } from '../dao/clienteDAO';
 import { utils } from '../utils/utils';
 
-class UsuarioController {
+class ClienteController {
     /**
-     *  Nombre: lista
-     *  Descripcion: lista de usuarios de la base de datos
-     *  Resultado: json con informacion de  usuarios registrados.
+
      */
     public async lista(req: Request, res: Response) {
         try {
@@ -18,9 +16,7 @@ class UsuarioController {
     }
 
     /**
-     *  Nombre: insert
-     *  Descripcion: insertar datos de un nuevo usuario
-     *  Resultado: json con mensaje.
+
      */
     public async insert(req: Request, res: Response) {
         try {
@@ -59,12 +55,10 @@ class UsuarioController {
                 return res.status(409).json({ message: result.message });
             }
             res.json(result);
-
-
         } catch (ex) {
             res.status(500).json({ message: ex.message });
         }
     }
 }
 
-export const usuarioController = new UsuarioController();
+export const clienteController = new ClienteController();

@@ -1,17 +1,9 @@
 import pool from "../database/database";
 
-class UsuarioDAO {
+class ClienteDAO {
     public async lista() {
         const result  = await pool.then(async (connection) => {
             return await connection.query("SELECT u.cveCliente, u.nombre, u.apellidos, u.cveUsuarioFK, u.tipoCliente, r.descripcion as rol FROM cliente u JOIN rol r ON r.cveRol = u.tipoCliente ORDER BY u.nombre, u.apellidos ASC");
-        });
-
-        return result;
-    }
-
-    public async verificarUsuario(usuario: string) {
-        const result = await pool.then(async (connection) => {
-            return await connection.query('SELECT cveUsuario FROM usuario WHERE username = ?', [usuario]);
         });
 
         return result;
@@ -32,14 +24,6 @@ class UsuarioDAO {
         return result;
         
     }
-
-    public async edit(user: any) {
-        const result = await pool.then(async (connection) => {
-            return await connection.query("UPDATE FROM cliente SET ?", [user]);
-        });
-        return result;
-        
-    }
 }
 
-export const dao = new UsuarioDAO();
+export const dao = new ClienteDAO();
