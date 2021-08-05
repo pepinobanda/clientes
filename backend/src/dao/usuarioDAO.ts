@@ -1,3 +1,4 @@
+import { token } from "morgan";
 import pool from "../database/database";
 
 class UsuarioDAO {
@@ -33,13 +34,21 @@ class UsuarioDAO {
         
     }
 
-    public async edit(user: any) {
+    public async update(user: any) {
         const result = await pool.then(async (connection) => {
-            return await connection.query("UPDATE FROM cliente SET ?", [user]);
+            return await connection.query("UPDATE cliente SET ? WHERE cveCliente = ?", [user, user.cveCliente]);
+        });
+        return result;
+    }
+    
+    public async delete(cveCliente: any) {
+        const result = await pool.then(async (connection) => {
+            return await connection.query("DELETE FROM cliente WHERE cveCliente = ?", [cveCliente]);
         });
         return result;
         
     }
+
 }
 
 export const dao = new UsuarioDAO();

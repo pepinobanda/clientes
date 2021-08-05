@@ -14,6 +14,7 @@ class ClienteRoutes {
 
         this.router.get('/', [checkJwt, checkRol([1])], clienteController.lista);
         this.router.put('/', [checkJwt, checkRol([1])], clienteController.insert);
+        this.router.put('/', [checkJwt, checkRol([1])], clienteController.insert);
     }
 }
 

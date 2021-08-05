@@ -31,8 +31,13 @@ class UsuarioController {
                 return res.status(409).json({ message: "Los campos son requeridos" });
             }
 
-            // Verificar longitud de caracteres
+            // Verificar nombre longitud de caracteres
             if(nombre.length > 250){
+                return res.status(500).json({message : "La longitud maxima del nombre es de 250 caracteres"});
+            }
+
+            // Verificar apellidos longitud de caracteres
+            if(apellidos.length > 450){
                 return res.status(500).json({message : "La longitud maxima del nombre es de 250 caracteres"});
             }
 
@@ -59,12 +64,59 @@ class UsuarioController {
                 return res.status(409).json({ message: result.message });
             }
             res.json(result);
+        } catch (ex) {
+            res.status(500).json({ message: ex.message });
+        }
+    }
 
+    //update
+    public async update(req: Request, res: Response) {
+        try {
+
+            const usuario = req.body;
+
+            if(usuario.cveCliente == null){
+                return res.status(400).json({message : "No se puede actualizar"});
+            }
+
+            const result = await dao.update(usuario);
+            if(result.affectedRows > 0){
+                res.json({message : "El cliente se ha actualizado de manera correcta."});
+            }else{
+                res.status(400).json({message : result.message});
+            }
+
+            
 
         } catch (ex) {
             res.status(500).json({ message: ex.message });
         }
     }
+
+    //Eliminar
+    public async delete(req: Request, res: Response) {
+        try {
+            const { cveCliente } = req.params;
+
+            if(cveCliente == null){
+                return res.status(400).json({ message: "No se pude eliminar" });
+            }
+
+
+            // delete
+            const result = await dao.delete(cveCliente);
+            if (result.affectedRows > 0) {
+                return res.json({ message: "Cliente eliminado exitosamente" });
+            } else {
+                return res.status(400).json({ message: result.message });
+            }
+            res.json(result);
+
+        } catch (ex) {
+            res.status(500).json({ message: ex.message });
+        }
+    }
+
 }
 
 export const usuarioController = new UsuarioController();

@@ -59,6 +59,7 @@ class ClienteController {
             res.status(500).json({ message: ex.message });
         }
     }
+    
 }
 
 export const clienteController = new ClienteController();

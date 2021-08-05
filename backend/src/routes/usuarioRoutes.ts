@@ -13,6 +13,8 @@ class UsuarioRoutes {
     config(): void {
         this.router.get('/', [checkJwt, checkRol([1])], usuarioController.lista);
         this.router.put('/', [checkJwt, checkRol([1])], usuarioController.insert);
+        this.router.post('/', [checkJwt, checkRol([1])], usuarioController.update);
+        this.router.delete('/:cveCliente', [checkJwt, checkRol([1])], usuarioController.delete);
     }
 }
 
