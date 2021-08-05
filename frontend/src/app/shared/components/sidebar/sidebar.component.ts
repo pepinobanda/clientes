@@ -25,7 +25,7 @@ export class SidebarComponent implements OnInit, OnDestroy {
           if (user.rol == 'admin') {
             this.lstMenu = [
               {
-                nombre: 'Usuarios',
+                nombre: 'Clientes',
                 icono: 'people',
                 ruta: '/admin/users'
               },

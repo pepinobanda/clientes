@@ -18,9 +18,8 @@ export class UsersComponent implements OnInit, OnDestroy {
   displayedColumns: string[] = [
     'nombre',
     'apellidos',
-    'username',
-    'fechaRegistro',
-    'rol',
+    'tipoCliente',
+    'cveUsuarioFK',
     'editar',
     'eliminar'
   ];
@@ -37,7 +36,7 @@ export class UsersComponent implements OnInit, OnDestroy {
   onOpenModal(user = {}): void {
     const dialogRef = this.dialog.open(ModalFormularioComponent, {
       disableClose: true,
-      data: {title: 'Nuevo usuario', user}
+      data: {title: 'Nuevo cliente', user}
     });
   }
 

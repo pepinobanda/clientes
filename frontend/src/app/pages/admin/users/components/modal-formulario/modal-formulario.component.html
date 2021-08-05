@@ -18,31 +18,23 @@
             </mat-error>
         </mat-form-field>
 
-        <mat-form-field class="full-width"  appearance="outline">
-            <mat-label>Username: </mat-label>
-            <input formControlName="username" matInput required>
-            <mat-error>
-                {{ getErrorMessage('username') }}
-            </mat-error>
-        </mat-form-field>
-
-        <mat-form-field class="full-width"  appearance="outline">
-            <mat-label>Contraseña: </mat-label>
-            <input formControlName="password" type="password" matInput required>
-            <mat-error>
-                {{ getErrorMessage('password') }}
-            </mat-error>
-        </mat-form-field>
-
         <mat-form-field class="full-width" appearance="outline">
-            <mat-label>Rol</mat-label>
-            <mat-select formControlName="cveRol">
+            <mat-label>Tipo de cliente</mat-label>
+            <mat-select formControlName="tipoCliente">
                 <mat-option *ngFor="let rol of roles" [value]="rol.cveRol">
                     {{ rol.descripcion }}
                 </mat-option>
             </mat-select>
             <mat-error>
-                {{ getErrorMessage('cveRol') }}
+                {{ getErrorMessage('tipoCliente') }}
+            </mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="full-width"  appearance="outline">
+            <mat-label>Id usuario que agregó: </mat-label>
+            <input formControlName="cveUsuarioFK" matInput required>
+            <mat-error>
+                {{ getErrorMessage('cveUsuarioFK') }}
             </mat-error>
         </mat-form-field>
 

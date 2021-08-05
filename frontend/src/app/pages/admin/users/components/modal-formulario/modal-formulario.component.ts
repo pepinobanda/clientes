@@ -8,7 +8,8 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 enum Action{
   EDIT = "",
-  NEW = ""
+  NEW = "",
+  DELETE = ''
 }
 
 @Component({
@@ -20,15 +21,18 @@ export class ModalFormularioComponent implements OnInit, OnDestroy {
 
   // Variables
   actionTODO = Action.NEW;
+  actionTODO2 = Action.EDIT;
+  actionTODO3 = Action.DELETE;
+  
+  
   private destroy$ = new Subject<any>();
   roles: Rol[] = [];
 
   userForm = this.fb.group({
     nombre : ['', [Validators.required]],
     apellidos : ['', [Validators.required]],
-    username : ['', [Validators.required, Validators.email]],
-    password : ['', [Validators.required, Validators.minLength(4)]],
-    cveRol : ['', [Validators.required]]
+    tipoCliente : ['', [Validators.required]],
+    cveUsuarioFK : ['', [Validators.required]]
   })
 
   constructor(public dialogRef: MatDialogRef<ModalFormularioComponent> ,@Inject(MAT_DIALOG_DATA) public data: any, private fb: FormBuilder, private UsersSvc: UsersService, private _snackBar: MatSnackBar) { }
@@ -36,9 +40,12 @@ export class ModalFormularioComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.getRoles();
 
-    if(this.data?.user.hasOwnProperty("cveUsuario")){
+    if(this.data?.user.hasOwnProperty("cveCliente")){
       this.actionTODO = Action.EDIT;
-      this.data.title = "Editar usuario"
+      this.data.title = "Editar cliente"
+    }
+    else if(this.data?.user.hasOwnProperty("cveCliente")){
+
     }
   }
 
@@ -70,8 +77,16 @@ export class ModalFormularioComponent implements OnInit, OnDestroy {
         });
         this.dialogRef.close(true);
       });
-    } else {
+    } else if(this.actionTODO2 == Action.EDIT) { 
       // Update
+      this.UsersSvc.update(formValue)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(result => {
+        this._snackBar.open(result.message, '', {
+          duration: 6000
+        });
+        this.dialogRef.close(true);
+      });
     }
 
     console.log(this.UsersSvc);
