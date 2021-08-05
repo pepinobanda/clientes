@@ -33,13 +33,13 @@ export class UsersService {
   }
 
   update(user: UserResponse): Observable<any> {
-    return this.http.put<any>(`${environment.URL_API}/usuario`, user)
+    return this.http.post<any>(`${environment.URL_API}/usuario/`, user)
     .pipe(catchError((error) => this.handleError(error)));
   }
 
-  delete(user: UserResponse): Observable<any> {
-    return this.http.put<any>(`${environment.URL_API}/usuario`, user)
-    .pipe(catchError((error) => this.handleError(error)));
+  delete(cveCliente: number): Observable<any> {
+    return this.http.delete<any>(`${environment.URL_API}/usuario/${cveCliente}`)
+      .pipe(catchError((error) => this.handleError(error)));
   }
 
   private handleError(err: any): Observable<never> {

@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { UserResponse } from '@app/shared/models/user.interface';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -25,9 +26,13 @@ export class UsersComponent implements OnInit, OnDestroy {
   ];
   lstUsers: UserResponse[] = [];
 
-  constructor(private userSvc: UsersService, private dialog: MatDialog) { }
+  constructor(private userSvc: UsersService, private dialog: MatDialog, private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
+    this.listUsers();
+  }
+
+  private listUsers(): void{
     this.userSvc.lista()
     .pipe(takeUntil(this.destroy$))
     .subscribe(users => this.lstUsers = users);
@@ -38,6 +43,27 @@ export class UsersComponent implements OnInit, OnDestroy {
       disableClose: true,
       data: {title: 'Nuevo cliente', user}
     });
+
+    dialogRef.beforeClosed()
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(result => {
+      if(result){
+        this.listUsers();
+      }
+    });
+  }
+
+  onDelete(cveCliente: number){
+    this.userSvc.delete(cveCliente)
+    .pipe(takeUntil(this.destroy$))
+    .subscribe(result =>{
+      if(result){
+        this._snackBar.open(result.message, '', {
+          duration: 6000
+        });
+        this.listUsers();
+      }
+    })
   }
 
   ngOnDestroy(): void {

@@ -7,9 +7,8 @@ import { Rol } from '@app/shared/models/rol.interface';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 enum Action{
-  EDIT = "",
-  NEW = "",
-  DELETE = ''
+  EDIT = "edit",
+  NEW = "new"
 }
 
 @Component({
@@ -21,14 +20,13 @@ export class ModalFormularioComponent implements OnInit, OnDestroy {
 
   // Variables
   actionTODO = Action.NEW;
-  actionTODO2 = Action.EDIT;
-  actionTODO3 = Action.DELETE;
-  
+
   
   private destroy$ = new Subject<any>();
   roles: Rol[] = [];
 
   userForm = this.fb.group({
+    cveCliente : [''],
     nombre : ['', [Validators.required]],
     apellidos : ['', [Validators.required]],
     tipoCliente : ['', [Validators.required]],
@@ -43,9 +41,7 @@ export class ModalFormularioComponent implements OnInit, OnDestroy {
     if(this.data?.user.hasOwnProperty("cveCliente")){
       this.actionTODO = Action.EDIT;
       this.data.title = "Editar cliente"
-    }
-    else if(this.data?.user.hasOwnProperty("cveCliente")){
-
+      this.editar()
     }
   }
 
@@ -60,16 +56,18 @@ export class ModalFormularioComponent implements OnInit, OnDestroy {
     .subscribe(roles => this.roles = roles)
   }
 
-  onSave(): void{
+  onSave(): void
+  {
     if(this.userForm.invalid){
       return;
-    }
-    
     const formValue = this.userForm.value;
 
+    console.log(formValue)
+    }
+    const formValue = this.userForm.value;
     if(this.actionTODO == Action.NEW) {
-      // Insert
-      this.UsersSvc.new(formValue)
+      const {cveCliente, ...rest} = formValue;
+      this.UsersSvc.new(rest)
       .pipe(takeUntil(this.destroy$))
       .subscribe(result => {
         this._snackBar.open(result.message, '', {
@@ -77,9 +75,10 @@ export class ModalFormularioComponent implements OnInit, OnDestroy {
         });
         this.dialogRef.close(true);
       });
-    } else if(this.actionTODO2 == Action.EDIT) { 
-      // Update
-      this.UsersSvc.update(formValue)
+    }else{
+      // Actualizar
+      const {cveUsuarioFK, ...rest} = formValue;
+      this.UsersSvc.update(rest)
       .pipe(takeUntil(this.destroy$))
       .subscribe(result => {
         this._snackBar.open(result.message, '', {
@@ -88,8 +87,16 @@ export class ModalFormularioComponent implements OnInit, OnDestroy {
         this.dialogRef.close(true);
       });
     }
+  }
 
-    console.log(this.UsersSvc);
+  private editar(): void{
+    this.userForm.patchValue({
+      cveCliente : this.data?.user.cveCliente,
+      nombre : this.data?.user.nombre,
+      apellidos : this.data?.user.apellidos,
+      tipoCliente : this.data?.user.tipoCliente,
+      cveUsuarioFK : this.data?.user.cveUsuarioFK
+    });
   }
 
   getErrorMessage(field: string): string{
