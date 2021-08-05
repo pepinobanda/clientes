@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 05-08-2021 a las 14:16:51
+-- Tiempo de generación: 05-08-2021 a las 17:50:39
 -- Versión del servidor: 10.4.20-MariaDB
 -- Versión de PHP: 8.0.8
 
@@ -101,11 +101,11 @@ CREATE TABLE `rol` (
 --
 
 INSERT INTO `rol` (`cveRol`, `descripcion`, `clave`, `activo`) VALUES
-(1, 'Cliente frecuente', 'clientef', 1),
-(2, 'Cliente enojón', 'clientee', 1),
-(3, 'Cliente ratero', 'clienter', 1),
-(4, 'Cliente carismático', 'clientec', 1),
-(5, 'Cliente afiliado', 'clienteaf', 1);
+(1, 'administrador', 'admin', 1),
+(2, 'ventas', 'ventas', 1),
+(3, 'comprador enojon', 'ce', 1),
+(4, 'Comprador amable', 'ca', 1),
+(5, 'Comprador ratero', 'cr', 1);
 
 -- --------------------------------------------------------
 
